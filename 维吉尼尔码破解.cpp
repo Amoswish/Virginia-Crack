@@ -46,7 +46,7 @@ void solveVirginia(char ciphertext[400],int len,int keylen){
     double imax = 0.065;
         int height = ceil(len/keylen);
         //计算按照密钥长度得出的每列重合指数
-            int tempAlphabet[26];
+            int tempAlphabet[25];
             memset(tempAlphabet, 0, sizeof(int)*26);
             for(int j = 0;j<keylen;j++){
                 int subAlphabet[height];
@@ -74,7 +74,7 @@ void solveVirginia(char ciphertext[400],int len,int keylen){
                     //每列中每个字母出现的频数
                         sum=sum+(Alphabet[k]*tempAlphabet[k]/height)/height;
                     }
-                    char tempoutchar = 'a'+i;
+                    char tempoutchar = 'a'-1+(25-i)%25;
                     cout<<tempoutchar<<"匹配频率"<<sum<<"\n";
                 }
 
