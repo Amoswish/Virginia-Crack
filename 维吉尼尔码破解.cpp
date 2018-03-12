@@ -10,7 +10,7 @@ double Alphabet[26] = {0.082,0.015,0.028,0.042,0.127,0.022,0.020,0.061,0.070,0.0
 //重合指数法求密钥长度
 int keyLenght(char ciphertext[400],int len){
     double imax = 0.065;
-    for(int i=1;i<25;i++){
+    for(int i=1;i<26;i++){
         int height = ceil(len/i);
         //计算按照假设密钥长度得出的每列重合指数
         int tempAlphabet[26];
@@ -32,13 +32,56 @@ int keyLenght(char ciphertext[400],int len){
             }
             double chonghezhishu = 0;
             chonghezhishu = sum/(n*(n-1));
-            cout<<n<<"  "<<sum<<"\n";
-            cout<<"密钥长度"<<i<<"第"<<j<<"列"<<"重合指数"<<chonghezhishu<<"\n";
+            //cout<<n<<"  "<<sum<<"\n";
+            cout<<"长度"<<i<<" "<<j<<" "<<" "<<chonghezhishu;
+            //cout<<"密钥长度"<<i<<"第"<<j<<"列"<<"重合指数"<<chonghezhishu;
         }
+        cout<<"\n";
     }
-    return 5;
+    return 6;
 }
+//求解具体密码
+void solveVirginia(char ciphertext[400],int len,int keylen){
+    //
+    double imax = 0.065;
+        int height = ceil(len/keylen);
+        //计算按照密钥长度得出的每列重合指数
+            int tempAlphabet[26];
+            memset(tempAlphabet, 0, sizeof(int)*26);
+            for(int j = 0;j<keylen;j++){
+                int subAlphabet[height];
+                //每一列
+                for(int k = 1;k<=height;k++){
+                    //记录子密文串
+                    subAlphabet[k-1]=ciphertext[keylen*(k-1)+j]-'A';
+                    //子密文串每个字母出现的频数
+                    //tempAlphabet[subAlphabet[k-1]]++;
+                }
+                cout<<"第"<<j<<"个\n";
+                for(int i=0;i<26;i++){
+                    memset(tempAlphabet, 0, sizeof(int)*26);
+                    int temp = subAlphabet[0];
+                    for(int a=0;a<height;a++){//对子密文段偏移26次
+                        subAlphabet[a]=(subAlphabet[a]+1)%25;
+                    }
+                    for(int b = 0;b<height;b++){
+                        //子密文串每个字母出现的频数
+                        tempAlphabet[subAlphabet[b]]++;
+                    }
+                                    //计算每一列的重合指数
+                    double sum = 0;
+                    for(int k = 0;k<=25;k++){
+                    //每列中每个字母出现的频数
+                        sum=sum+(Alphabet[k]*tempAlphabet[k]/height)/height;
+                    }
+                    char tempoutchar = 'a'+i;
+                    cout<<tempoutchar<<"匹配频率"<<sum<<"\n";
+                }
 
+        }
+
+        cout<<"\n";
+}
 int main()
 {
     char ciphertext[400];
@@ -48,5 +91,6 @@ int main()
     int keylen;//密钥长度
     len = strlen(ciphertext);
     keylen = keyLenght(ciphertext,len);
+    solveVirginia(ciphertext,len,keylen);
     return 0;
 }
