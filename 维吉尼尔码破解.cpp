@@ -38,7 +38,10 @@ int keyLenght(char ciphertext[400],int len){
         }
         cout<<"\n";
     }
-    return 6;
+    cout<<"请根据重合指数大小给出具体的密钥长度";
+    int temp = 0;
+    cin>>temp;
+    return temp;
 }
 //求解具体密码
 string solveVirginia(char ciphertext[400],int len,int keylen){
